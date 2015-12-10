@@ -2,25 +2,22 @@ var canvasData = {
     height: 606,
     width: 505
 };
-// Enemies our player must avoid
+
+// Enemy class stuff
 var Enemy = function() {
     this.speed = Math.random() * 150;
     this.x = 0;
     this.y = Math.random() * 400;
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
 
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
+    // the enemy image file
     this.sprite = 'images/enemy-bug.png';
 };
 
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
-// Multiply movement by dt so all computers work the same
+// Update the enemy's position
 Enemy.prototype.update = function(dt) {
     this.x += dt * this.speed;
     if (this.x > canvasData.width) {
+        // TODO this is crap
         allEnemies.shift(-1);
         allEnemies.push(new Enemy());
     }
@@ -31,9 +28,7 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+// the Player class
 Player = function() {
     this.speed = 20
     this.x = 200;
@@ -69,9 +64,7 @@ Player.prototype.handleInput = function(direction) {
     }
 };
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
+// Create the enemies and the player
 var numOfEnemies = 5;
 var allEnemies = [];
 for (var i = 0; i < numOfEnemies; i++) {
@@ -80,8 +73,7 @@ for (var i = 0; i < numOfEnemies; i++) {
 
 var player = new Player();
 
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
+// listen for a keyup event and handle it
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',
