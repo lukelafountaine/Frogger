@@ -1,6 +1,8 @@
 // the Player class
 Player = function(startX, startY, speed) {
     this.speed = speed;
+    this.startX = startX;
+    this.startY = startY;
     this.x = startX;
     this.y = startY;
     this.lives = 3;
@@ -8,8 +10,8 @@ Player = function(startX, startY, speed) {
 };
 
 Player.prototype.reset = function() {
-    this.x = game.startX;
-    this.y = game.startY;
+    this.x = this.startX;
+    this.y = this.startY;
 };
 
 Player.prototype.update = function(){

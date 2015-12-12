@@ -1,10 +1,11 @@
 // Enemy class stuff
-var Enemy = function() {
-    this.speed = Math.random() * (game.difficulty * 100);
+var Enemy = function(start, end, difficulty) {
+    //
+    this.speed = Math.random() * (difficulty * 100);
     // starts off to the left of the screen
     this.x = -100;
     // chooses a random row to start on
-    this.y = Math.random() * (game.startRoad - game.endRoad) + game.endRoad;
+    this.y = Math.random() * (start - end) + end;
 
     // the enemy image file
     this.sprite = 'images/enemy-bug.png';
