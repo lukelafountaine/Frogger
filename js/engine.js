@@ -1,18 +1,4 @@
-/* Engine.js
- * This file provides the game loop functionality (update entities and render),
- * draws the initial game board on the screen, and then calls the update and
- * render methods on your player and enemy objects (defined in your app.js).
- *
- * A game engine works by drawing the entire game screen over and over, kind of
- * like a flipbook you may have created as a kid. When your player moves across
- * the screen, it may look like just that image/character is moving or being
- * drawn but that is not the case. What's really happening is the entire "scene"
- * is being drawn over and over, presenting the illusion of animation.
- *
- * This engine is available globally via the Engine variable and it also makes
- * the canvas' context (ctx) object globally available to make writing app.js
- * a little simpler to work with.
- */
+// This file handles the redrawing of the board
 
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
@@ -29,16 +15,10 @@ var Engine = (function(global) {
     canvas.height = 606;
     doc.body.appendChild(canvas);
 
-    /* This function serves as the kickoff point for the game loop itself
-     * and handles properly calling the update and render methods.
-     */
+    // This function kicks off the game loop
     function main() {
-        /* Get our time delta information which is required if your game
-         * requires smooth animation. Because everyone's computer processes
-         * instructions at different speeds we need a constant value that
-         * would be the same for everyone (regardless of how fast their
-         * computer is) - hurray time!
-         */
+        // time delta between clock cycles so it runs about the same speed
+        // for each computer
         var now = Date.now(),
             dt = (now - lastTime) / 1000.0;
 
@@ -83,6 +63,10 @@ var Engine = (function(global) {
         // checkCollisions();
     }
 
+    function checkCollisions() {
+
+    }
+
     /* This is called by the update function and loops through all of the
      * objects within your allEnemies array as defined in app.js and calls
      * their update() methods. It will then call the update function for your
@@ -94,7 +78,7 @@ var Engine = (function(global) {
         game.enemies.forEach(function(enemy) {
             enemy.update(dt);
         });
-        player.update();
+        game.player.update();
     }
 
     /* This function initially draws the "game level", it will then call
@@ -139,19 +123,14 @@ var Engine = (function(global) {
         renderEntities();
     }
 
-    /* This function is called by the render function and is called on each game
-     * tick. Its purpose is to then call the render functions you have defined
-     * on your enemy and player entities within app.js
-     */
+    // Render all the players, enemies etc.
     function renderEntities() {
-        /* Loop through all of the objects within the allEnemies array and call
-         * the render function you have defined.
-         */
+        // render the enemies
         game.enemies.forEach(function(enemy) {
             enemy.render();
         });
-
-        player.render();
+        // render the player
+        game.player.render();
     }
 
     /* This function does nothing but it could have been a good place to
