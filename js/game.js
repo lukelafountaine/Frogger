@@ -1,46 +1,53 @@
-var Game = function() {
+var Game = function(canvas) {
     // all the board data
     this.enemies = [];
     this.startX = 200;
-    this.startY = 400;
+    this.startY = 405;
     this.lossRadius = 25;
     this.startRoad = 340;
     this.endRoad = 20;
-    this.numOfEnemies = 3;
-    this.boardBottom = 420;
+    this.boardBottom = 400;
     this.boardSide = 400;
-    this.difficulty = 1;
-    this.playerSpeed = 20;
+    this.level = 1;
 
     // create the player
-    this.player = new Player(this.startX, this.startY, this.playerSpeed);
+    this.player = new Player(this.startX, this.startY, 83);
+    console.log(this);
 
-    // create some enemies and set an interval
+    // create some enemies and then set an interval
     this.createEnemies();
-    var that = this;
-    setInterval(function() {
-      that.createEnemies.call(that);
-    }, 3000 / this.difficulty);
-}
+    this.startEnemies();
+};
 
 Game.prototype.win = function() {
-    alert("You won level " + this.difficulty + "\nStarting level " + (this.difficulty+1));
+    alert("You won level " + this.level + "\nStarting level " + (this.level+1));
     this.enemies = [];
-    this.numOfEnemies += 1;
-    this.difficulty += 1;
-    this.populateEnemies();
-    player.reset();
-}
+    this.level += 1;
+    this.stopEnemies();
+    this.startEnemies();
+    this.player.reset();
+};
+
+Game.prototype.startEnemies = function() {
+    var self = this;
+    setInterval(function() {
+        self.createEnemies();
+    }, 1000 / self.level);
+};
+
+Game.prototype.stopEnemies = function() {
+    clearInterval(this.startEnemies);
+};
 
 Game.prototype.createEnemies = function() {
-    for (var i = 0; i < this.numOfEnemies; i++)
-        this.enemies.push(new Enemy(this.startRoad, this.endRoad, this.difficulty));
-}
+    this.enemies.push(new Enemy(this.startRoad, this.endRoad, this.level));
+};
 
 Game.prototype.checkCollisions = function() {
-    for (i in this.enemies) {
-        if (Math.abs(this.enemies[i].x - this.player.x) < this.lossRadius
-            && Math.abs(this.enemies[i].y - this.player.y) < this.lossRadius) {
+    // check to see the position of an enemy is within a given range of player
+    for (var i in this.enemies) {
+        if (Math.abs(this.enemies[i].x - this.player.x) < this.lossRadius &&
+        Math.abs(this.enemies[i].y - this.player.y) < this.lossRadius) {
             this.player.reset();
             return;
           }
